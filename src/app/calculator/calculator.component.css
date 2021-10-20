@@ -1,0 +1,74 @@
+:host{
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+div.keyboard{
+  width: 300px;
+  display: grid;
+  grid-template-areas:
+    'adds adds adds op'
+    'num num num op'
+    'num num num op'
+    'num num num op'
+    'num num num op';
+}
+div.numbers{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap-reverse;
+
+  width: 225px;
+
+  grid-area: num;
+}
+
+div.matOperations{
+  display: flex;
+  flex-direction: column;
+
+  width: 75px;
+
+  grid-area: op;
+}
+div.adds{
+  width: 225px;
+  grid-area: adds;
+}
+div.matOperations > button{
+  background-color: #bf4b11;
+}
+div.adds > button{
+  background-color: #9292a5;
+}
+/*div.numbers > button{*/
+/*  background-color: #d2e9e1;*/
+/*}*/
+
+button{
+  width: 75px;
+  height: 75px;
+  border: none;
+
+  outline: none;
+
+  cursor: pointer;
+
+  font-size: large;
+}
+p.result{
+  font-size: xx-large;
+  width: 300px;
+  overflow-x: hidden;
+}
+button.zero{
+  width: 150px;
+}
+
+button:hover{
+  opacity: 0.5;
+}

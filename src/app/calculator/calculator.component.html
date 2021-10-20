@@ -1,0 +1,31 @@
+<div>
+  <p class="result">{{result}}</p>
+  <div class="keyboard">
+    <div class="adds">
+      <button (click)="clear()">{{ac ? 'AC' : 'C'}}</button>
+      <button (click)="minusToPlus()">+/-</button>
+      <button (click)="operatorClick('%')">%</button>
+    </div>
+    <div class="numbers">
+      <button (click)="numberClick('0')" class="zero">0</button>
+      <button (click)="numberClick('.')">,</button>
+      <button (click)="numberClick('1')">1</button>
+      <button (click)="numberClick('2')">2</button>
+      <button (click)="numberClick('3')">3</button>
+      <button (click)="numberClick('4')">4</button>
+      <button (click)="numberClick('5')">5</button>
+      <button (click)="numberClick('6')">6</button>
+      <button (click)="numberClick('7')">7</button>
+      <button (click)="numberClick('8')">8</button>
+      <button (click)="numberClick('9')">9</button>
+    </div>
+
+    <div class="matOperations">
+      <button (click)="operatorClick('/')">/</button>
+      <button (click)="operatorClick('*')">x</button>
+      <button (click)="operatorClick('-')">-</button>
+      <button (click)="operatorClick('+')">+</button>
+      <button (click)="equal()">=</button>
+    </div>
+  </div>
+</div>
