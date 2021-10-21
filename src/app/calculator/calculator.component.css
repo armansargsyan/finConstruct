@@ -26,7 +26,9 @@ div.numbers{
 
   grid-area: num;
 }
-
+button.active{
+  opacity: 0.6;
+}
 div.matOperations{
   display: flex;
   flex-direction: column;
@@ -45,9 +47,6 @@ div.matOperations > button{
 div.adds > button{
   background-color: #9292a5;
 }
-/*div.numbers > button{*/
-/*  background-color: #d2e9e1;*/
-/*}*/
 
 button{
   width: 75px;

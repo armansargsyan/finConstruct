@@ -8,9 +8,10 @@ import {Component, OnInit} from '@angular/core';
 export class CalculatorComponent implements OnInit {
 
   public result: string = '0';
+  public ac: boolean = false;
   private newNumber: boolean = false;
   private array: any[] = [];
-  public ac: boolean = false;
+  private previousOperatorElement: HTMLButtonElement | undefined;
 
 
   constructor() {
@@ -34,7 +35,9 @@ export class CalculatorComponent implements OnInit {
 
   }
 
-  operatorClick(operator: string) {
+  operatorClick(operator: string, event?: MouseEvent) {
+
+    if (event) this.operatorStyle(<HTMLButtonElement>event?.target)
 
     if (operator === '%') {
       this.percent();
@@ -67,12 +70,12 @@ export class CalculatorComponent implements OnInit {
       this.array.push(result);
     }
 
-    if (!all){
-      if (this.array[this.array.length - 2] === '*' || this.array[this.array.length - 2] === '/'){
+    if (!all) {
+      if (this.array[this.array.length - 2] === '*' || this.array[this.array.length - 2] === '/') {
         // @ts-ignore
         result = this.recursiveOperation(this.operation(...this.array.splice(-3)), all);
       }
-    }else if (this.array.length > 2) {
+    } else if (this.array.length > 2) {
       // @ts-ignore
       result = this.recursiveOperation(this.operation(...this.array.splice(-3)));
     }
@@ -96,10 +99,27 @@ export class CalculatorComponent implements OnInit {
 
   }
 
+  private percent() {
+    let operator = this.array[this.array.length - 1];
+    if (operator === '+' || operator === '-') {
+      console.log(this.array[this.array.length - 1], this.result)
+      this.result = (this.array[this.array.length - 2] * (+this.result / 100)).toString();
+    } else {
+      this.result = (+this.result / 100).toString();
+    }
+    this.newNumber = true;
+
+  }
+
+  private operatorStyle(newOperatorElement: HTMLButtonElement) {
+    this.previousOperatorElement?.classList.remove('active');
+    newOperatorElement.classList.add('active');
+    this.previousOperatorElement = newOperatorElement;
+  }
+
   equal() {
     this.result = this.recursiveOperation(+this.result).toString();
   }
-
 
   clear() {
     if (this.result === '0') {
@@ -115,18 +135,5 @@ export class CalculatorComponent implements OnInit {
     if (this.result === '0') {
       this.result = '-0';
     } else this.result = (+this.result * (-1)).toString();
-  }
-
-  private percent() {
-    let operator = this.array[this.array.length - 1];
-    if (operator === '+' || operator === '-'){
-      console.log(this.array[this.array.length - 1], this.result)
-      this.result = (this.array[this.array.length - 2]*(+this.result / 100)).toString();
-    }
-    else {
-      this.result = (+this.result / 100).toString();
-    }
-    this.newNumber = true;
-
   }
 }

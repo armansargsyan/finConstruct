@@ -21,10 +21,10 @@
     </div>
 
     <div class="matOperations">
-      <button (click)="operatorClick('/')">/</button>
-      <button (click)="operatorClick('*')">x</button>
-      <button (click)="operatorClick('-')">-</button>
-      <button (click)="operatorClick('+')">+</button>
+      <button (click)="operatorClick('/', $event)">/</button>
+      <button (click)="operatorClick('*', $event)">x</button>
+      <button (click)="operatorClick('-', $event)">-</button>
+      <button (click)="operatorClick('+', $event)">+</button>
       <button (click)="equal()">=</button>
     </div>
   </div>
