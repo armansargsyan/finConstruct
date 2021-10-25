@@ -1,5 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 
+export enum OPERATORS {
+  plus = '+',
+  minus = '-',
+  multiple = '*',
+  division = '/',
+  percent = '%'
+}
 @Component({
   selector: 'app-calculator',
   templateUrl: './calculator.component.html',
@@ -8,10 +15,10 @@ import {Component, OnInit} from '@angular/core';
 export class CalculatorComponent implements OnInit {
 
   public result: string = '0';
-  public ac: boolean = false;
+  public ac: boolean = true;
+  public currentOperator: string = '';
   private newNumber: boolean = false;
-  private array: any[] = [];
-  private previousOperatorElement: HTMLButtonElement | undefined;
+  private expression: any[] = [];
 
 
   constructor() {
@@ -28,105 +35,60 @@ export class CalculatorComponent implements OnInit {
     }
     if (this.ac) this.ac = !this.ac;
 
-    if ((this.result === '0' || this.result === '-0') && number === '0') return;
-    if (this.result === '0' && number !== '.') this.result = number;
-    else if (this.result === '-0' && number !== '.') this.result = '-' + number;
+    if (!this.result.includes('.') && +this.result === 0) {
+      if (number === '0') return;
+      this.result = this.result.replace('0', number);
+    }
     else this.result += number;
 
   }
 
-  operatorClick(operator: string, event?: MouseEvent) {
+  addPoint(){
+    if (this.newNumber) {
+      this.result = '0';
+      this.newNumber = false;
+    }
 
-    if (event) this.operatorStyle(<HTMLButtonElement>event?.target)
+    if (!this.result.includes('.')){
+      this.result += '.';
+    }
+  }
 
-    if (operator === '%') {
+  operatorClick(operator: string) {
+
+    this.currentOperator = operator;
+
+    if (operator === OPERATORS.percent) {
       this.percent();
-    } else if (!this.array.length) {
-      this.array.push(+this.result);
-      this.array.push(operator);
+    } else if (!this.expression.length) {
+      this.expression = [+this.result, operator];
       this.newNumber = true;
     } else {
       if (this.newNumber) {
-        this.array[this.array.length - 1] = operator;
+        this.expression[this.expression.length - 1] = operator;
       } else {
-        if (operator === '*' || operator === '/') {
-          // this.array.push(+this.result);
-          this.result = this.recursiveOperation(+this.result, false).toString();
-
-        } else {
-          this.result = this.recursiveOperation(+this.result).toString();
-        }
-        this.array.push(operator);
+        // this.array.push(+this.result);
+        this.result = this.recursiveOperation(+this.result, !this.hidePriorityOperator(<OPERATORS>operator)).toString();
+        this.expression.push(operator);
         this.newNumber = true;
 
       }
     }
-    console.log(this.array)
-  }
-
-  private recursiveOperation(result: number, all: boolean = true): number {
-    if (this.array.length !== 1) {
-
-      this.array.push(result);
-    }
-
-    if (!all) {
-      if (this.array[this.array.length - 2] === '*' || this.array[this.array.length - 2] === '/') {
-        // @ts-ignore
-        result = this.recursiveOperation(this.operation(...this.array.splice(-3)), all);
-      }
-    } else if (this.array.length > 2) {
-      // @ts-ignore
-      result = this.recursiveOperation(this.operation(...this.array.splice(-3)));
-    }
-    return result;
-  }
-
-  private operation(firstNumber: number, operator: string, secondNumber: number): number {
-
-    switch (operator) {
-      case '+':
-        return firstNumber + secondNumber;
-      case '-':
-        return firstNumber - secondNumber;
-      case '*':
-        return firstNumber * secondNumber;
-      case '/':
-        return firstNumber / secondNumber;
-      default:
-        throw new Error(`Custom error Unknown operator: ${operator}`);
-    }
-
-  }
-
-  private percent() {
-    let operator = this.array[this.array.length - 1];
-    if (operator === '+' || operator === '-') {
-      console.log(this.array[this.array.length - 1], this.result)
-      this.result = (this.array[this.array.length - 2] * (+this.result / 100)).toString();
-    } else {
-      this.result = (+this.result / 100).toString();
-    }
-    this.newNumber = true;
-
-  }
-
-  private operatorStyle(newOperatorElement: HTMLButtonElement) {
-    this.previousOperatorElement?.classList.remove('active');
-    newOperatorElement.classList.add('active');
-    this.previousOperatorElement = newOperatorElement;
   }
 
   equal() {
     this.result = this.recursiveOperation(+this.result).toString();
+    this.currentOperator = '';
+
   }
 
   clear() {
     if (this.result === '0') {
-      this.array = [];
+      this.expression = [];
+      this.currentOperator = '';
     }
     this.ac = true;
-    this.result = '0';
+    this.result = '0'
     this.newNumber = false;
 
   }
@@ -136,4 +98,54 @@ export class CalculatorComponent implements OnInit {
       this.result = '-0';
     } else this.result = (+this.result * (-1)).toString();
   }
+
+  private recursiveOperation(result: number, all: boolean = true): number {
+    if (this.expression.length !== 1) {
+
+      this.expression.push(result);
+    }
+
+    if (!all) {
+      const prevOperator = this.expression[this.expression.length - 2];
+      if (this.hidePriorityOperator(prevOperator)) {
+        result = this.recursiveOperation(CalculatorComponent.calculateOperation(...this.expression.splice(-3) as [number, string, number]), all);
+      }
+    } else if (this.expression.length > 2) {
+      result = this.recursiveOperation(CalculatorComponent.calculateOperation(...this.expression.splice(-3) as [number, string, number]));
+    }
+    return result;
+  }
+
+  private static calculateOperation(firstNumber: number, operator: string, secondNumber: number): number {
+
+    switch (operator) {
+      case OPERATORS.plus:
+        return firstNumber + secondNumber;
+      case OPERATORS.minus:
+        return firstNumber - secondNumber;
+      case OPERATORS.multiple:
+        return firstNumber * secondNumber;
+      case OPERATORS.division:
+        return firstNumber / secondNumber;
+      default:
+        throw new Error(`Custom error Unknown operator: ${operator}`);
+    }
+
+  }
+
+  private percent() {
+    let operator = this.expression[this.expression.length - 1];
+    if (operator && !this.hidePriorityOperator(operator)) {
+      this.result = (this.expression[this.expression.length - 2] * (+this.result / 100)).toString();
+    } else {
+      this.result = (+this.result / 100).toString();
+    }
+    this.newNumber = true;
+
+  }
+
+  hidePriorityOperator(operator: OPERATORS): boolean{
+    return operator === OPERATORS.division || operator === OPERATORS.multiple;
+  }
+
 }

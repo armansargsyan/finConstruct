@@ -1,0 +1,6 @@
+<div>
+  <input disabled [value]="value.toDateString()">
+  <button class="material-icons" (click)="openBody()" [class.active]="body">event</button>
+</div>
+<app-calendar-body *ngIf="body" [(selectedValue)]="value"></app-calendar-body>
+

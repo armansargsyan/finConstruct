@@ -8,7 +8,7 @@
     </div>
     <div class="numbers">
       <button (click)="numberClick('0')" class="zero">0</button>
-      <button (click)="numberClick('.')">,</button>
+      <button (click)="addPoint()">,</button>
       <button (click)="numberClick('1')">1</button>
       <button (click)="numberClick('2')">2</button>
       <button (click)="numberClick('3')">3</button>
@@ -19,12 +19,11 @@
       <button (click)="numberClick('8')">8</button>
       <button (click)="numberClick('9')">9</button>
     </div>
-
-    <div class="matOperations">
-      <button (click)="operatorClick('/', $event)">/</button>
-      <button (click)="operatorClick('*', $event)">x</button>
-      <button (click)="operatorClick('-', $event)">-</button>
-      <button (click)="operatorClick('+', $event)">+</button>
+    <div class="matOperations" >
+      <button [class.active]="currentOperator === '/'" (click)="operatorClick('/')">/</button>
+      <button [class.active]="currentOperator === '*'" (click)="operatorClick('*')">x</button>
+      <button [class.active]="currentOperator === '-'" (click)="operatorClick('-')">-</button>
+      <button [class.active]="currentOperator === '+'" (click)="operatorClick('+')">+</button>
       <button (click)="equal()">=</button>
     </div>
   </div>

@@ -1,0 +1,52 @@
+:host{
+  display: block;
+  width: 500px;
+  height: fit-content;
+}
+table{
+  cursor: pointer;
+}
+button{
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+}
+td:hover > button{
+  background: #c6c6cd;
+}
+.today > button{
+  border: 1px #9292a5 solid;
+  background: #efefef;
+}
+td.value > button{
+  background: #bf4b11;
+  border: none;
+}
+td{
+  cursor: pointer;
+}
+
+.days button{
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+}
+
+.months td, .years td{
+  width: 100px;
+}
+.months button, .years button{
+  height: 30px;
+  width: inherit;
+  border-radius: 15px;
+}
+.dateButton{
+  margin: 5px;
+  height: 30px;
+  border-radius: 15px;
+}
+
+td.week{
+  color: grey
+}
