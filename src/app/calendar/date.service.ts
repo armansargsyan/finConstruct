@@ -24,7 +24,7 @@ export class DateService {
     return resultDayOfWeek >= 0 ? resultDayOfWeek : 7 + resultDayOfWeek;
   }
 
-  public getMonthDaysMatrix(day: Date, pageShift: number = 0): number[][]{
+  public getMonthDaysMatrix(day: Date): number[][]{
     let resultMatrix: number[][] = [];
     let lastDay: Date = this.getLastDayOfMonth(day);
     let daysCount: number = this.getDaysCount(lastDay);
@@ -46,7 +46,7 @@ export class DateService {
     return resultMatrix;
   }
 
-  public getYearMatrix(year: number, column: number = 4, row: number = 4, pageShift: number = 0): number[][]{
+  public getYearMatrix(year: number, column: number = 4, row: number = 4): number[][]{
     let resultMatrix: number[][] = [];
     let currentYear = year - column;
     for (let i = 0; i < row; i++){

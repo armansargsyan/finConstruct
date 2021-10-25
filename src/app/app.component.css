@@ -1,0 +1,20 @@
+nav{
+  display: flex;
+  height: 70px;
+  background-color: #1122bf;
+  align-items: center;
+}
+a{
+  display: block;
+  width: 100px;
+  color: grey;
+  text-align: center;
+  text-decoration: none;
+}
+a:visited{
+  text-decoration: none;
+}
+nav > a.active{
+  box-shadow: 1px 0 0 0 black;
+  background-color: yellow;
+}
