@@ -43,17 +43,6 @@ export class CalculatorComponent implements OnInit {
 
   }
 
-  addPoint(){
-    if (this.newNumber) {
-      this.result = '0';
-      this.newNumber = false;
-    }
-
-    if (!this.result.includes('.')){
-      this.result += '.';
-    }
-  }
-
   operatorClick(operator: string) {
 
     this.currentOperator = operator;
@@ -73,6 +62,17 @@ export class CalculatorComponent implements OnInit {
         this.newNumber = true;
 
       }
+    }
+  }
+
+  addPoint(){
+    if (this.newNumber) {
+      this.result = '0';
+      this.newNumber = false;
+    }
+
+    if (!this.result.includes('.')){
+      this.result += '.';
     }
   }
 

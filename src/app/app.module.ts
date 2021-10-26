@@ -7,6 +7,7 @@ import { CalculatorComponent } from './calculator/calculator.component';
 import {CalendarModule} from "./calendar/calendar.module";
 import {MatIconModule} from "@angular/material/icon";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {RegistrationModule} from "./registration/registration.module";
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule,
     AppRoutingModule,
     CalendarModule,
+    RegistrationModule,
     MatIconModule,
     BrowserAnimationsModule,
 

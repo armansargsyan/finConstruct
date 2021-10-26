@@ -1,0 +1,45 @@
+<!--<app-registration-first-child *ngIf="!secondChild" [parentFormGroup]="userFormGroup" (parentFormGroupNext)="next()"></app-registration-first-child>-->
+<!--<app-registration-second-child *ngIf="secondChild" [parentFormGroup]="userFormGroup" (parentFormGroupSubmit)="submit()"></app-registration-second-child>-->
+<app-registration-first-child *ngIf="!secondChild">
+  <form [formGroup]="userFormGroup">
+    <div>
+      <label>First Name</label>
+      <input formControlName="firstName">
+    </div>
+    <div>
+      <label>Last Name</label>
+      <input formControlName="lastName">
+    </div>
+    <div>
+      <label>Age</label>
+      <input type="number" formControlName="age" >
+    </div>
+    <div>
+      <label>Email</label>
+      <input formControlName="email" >
+    </div>
+    <div class="buttons">
+      <button (click)="secondChild = true"
+              [disabled]="userFormGroup.controls['age'].invalid ||
+            userFormGroup.controls['firstName'].invalid ||
+            userFormGroup.controls['lastName'].invalid ||
+            userFormGroup.controls['email'].invalid">Next</button>
+    </div>
+  </form>
+</app-registration-first-child>
+<app-registration-second-child *ngIf="secondChild">
+  <form [formGroup]="userFormGroup" (submit)="submitForm()">
+    <div>
+      <label>Password</label>
+      <input type="password" formControlName="password">
+    </div>
+    <div>
+      <label>Confirm Password</label>
+      <input type="password" #confirmPassword>
+    </div>
+    <div class="buttons">
+      <button (click)="secondChild = false">Back</button>
+      <button type="submit" [disabled]="userFormGroup.invalid || this.userFormGroup.value.password !== confirmPassword.value">Submit</button>
+    </div>
+  </form>
+</app-registration-second-child>

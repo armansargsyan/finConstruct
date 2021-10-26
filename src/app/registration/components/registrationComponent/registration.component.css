@@ -1,0 +1,19 @@
+form{
+  display: flex;
+
+  flex-direction: column;
+}
+div{
+  display: flex;
+  margin: 5px;
+
+  flex-direction: column;
+}
+div.buttons{
+  flex-direction: row;
+  justify-content: space-around;
+}
+button{
+  width: 60px;
+  height: 30px;
+}
