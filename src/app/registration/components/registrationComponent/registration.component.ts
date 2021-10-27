@@ -8,18 +8,33 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class RegistrationComponent{
 
-  public secondChild: boolean = false;
+  public isSecondStep: boolean = false;
 
   public userFormGroup: FormGroup = new FormGroup({
-    'firstName': new FormControl('', Validators.required),
-    'lastName': new FormControl('', Validators.required),
-    'age': new FormControl('', [Validators.required, Validators.min(18)]),
-    'email': new FormControl('', [Validators.required, Validators.email]),
-    'password': new FormControl('', [Validators.required])
+    'firstStep': new FormGroup(
+      {
+        'firstName': new FormControl('', Validators.required),
+        'lastName': new FormControl('', Validators.required),
+        'age': new FormControl('', [Validators.required, Validators.min(18)]),
+        'email': new FormControl('', [Validators.required, Validators.email])
+      }
+    ),
+    'secondStep': new FormGroup(
+      {
+        'password': new FormControl('', [Validators.required])
+      }
+    )
   });
+  public firstStepForm: FormGroup = <FormGroup>this.userFormGroup.controls['firstStep'];
+  public secondStepForm: FormGroup = <FormGroup>this.userFormGroup.controls['secondStep'];
 
   submitForm() {
-    console.log(this.userFormGroup)
+    console.log(this.userFormGroup.value)
   }
+
+  changeStep() {
+    this.isSecondStep = !this.isSecondStep;
+  }
+
 
 }

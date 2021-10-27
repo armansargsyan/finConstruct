@@ -7,4 +7,12 @@ import {FormGroup} from "@angular/forms";
   styleUrls: ['./registration-first-child.component.css']
 })
 export class RegistrationFirstChildComponent{
+  @Input()
+  firstStepFormGroup: FormGroup = new FormGroup({});
+  @Output()
+  nextStepEvent: EventEmitter<void> = new EventEmitter<void>();
+
+  nextStep(): void{
+    this.nextStepEvent.emit();
+  }
 }

@@ -1,4 +1,22 @@
-<div>
   <h1>Enter Your Data</h1>
-  <ng-content></ng-content>
-</div>
+  <form [formGroup]="firstStepFormGroup" (submit)="nextStep()">
+    <div>
+      <label>First Name</label>
+      <input formControlName="firstName">
+    </div>
+    <div>
+      <label>Last Name</label>
+      <input formControlName="lastName">
+    </div>
+    <div>
+      <label>Age</label>
+      <input type="number" formControlName="age" >
+    </div>
+    <div>
+      <label>Email</label>
+      <input formControlName="email" >
+    </div>
+    <div class="buttons">
+      <button type="submit" [disabled]="firstStepFormGroup.invalid">Next</button>
+    </div>
+  </form>
