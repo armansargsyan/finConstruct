@@ -1,16 +1,19 @@
 :host{
   display: block;
   width: fit-content;
-  height: 500px;
   margin: 10px;
 }
 div{
   position: relative;
   width: fit-content;
 }
-input{
+input {
   height: 50px;
   border: none;
+  padding-right: 15px;
+  background-color: #e1e1e3;
+  border-bottom: 1px #4cbd9e solid;
+  text-align: center;
 }
 button{
   position: absolute;
@@ -24,7 +27,7 @@ button{
   cursor: pointer;
 }
 button.active{
-  color: #287af6;
+  color: #4cbd9e;
 }
 app-calendar-body{
   position: relative;

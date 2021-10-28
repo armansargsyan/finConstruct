@@ -1,52 +1,76 @@
 :host{
   display: block;
-  width: 500px;
+  width: fit-content;
   height: fit-content;
 }
-table{
-  cursor: pointer;
-}
 button{
+  margin: 2px;
   cursor: pointer;
   background: none;
   border: none;
   outline: none;
 }
-td:hover > button{
+button:hover{
   background: #c6c6cd;
+
 }
-.today > button{
+button.today{
   border: 1px #9292a5 solid;
   background: #efefef;
 }
-td.value > button{
-  background: #bf4b11;
+button.value{
+  background: #4cbd9e;
   border: none;
 }
-td{
-  cursor: pointer;
+div.months , div.years{
+  display: grid;
+  grid-template-areas: 'but but but but';
+}
+div.months > button, div.years > button{
+  width: 100px;
+  height: 30px;
+  border-radius: 15px;
 }
 
-.days button{
+div.controlBar{
+  width: 300px;
+  display: flex;
+  align-items: center;
+}
+.pageControl{
+  display: flex;
+}
+.pageControl > button{
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+}
+div.days {
+  display: grid;
+  grid-template-areas: 'but but but but but but but';
+}
+.days > button{
   width: 30px;
   height: 30px;
   border-radius: 15px;
 }
+.days > button.hide{
+  visibility: hidden;
+}
 
-.months td, .years td{
-  width: 100px;
-}
-.months button, .years button{
-  height: 30px;
-  width: inherit;
-  border-radius: 15px;
-}
 .dateButton{
   margin: 5px;
   height: 30px;
   border-radius: 15px;
 }
-
-td.week{
-  color: grey
+div.days > p{
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  color: grey;
+  text-align: center;
+  border-radius: 15px;
 }

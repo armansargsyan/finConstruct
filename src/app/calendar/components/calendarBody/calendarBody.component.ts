@@ -1,20 +1,22 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {DateService} from "../../date.service";
 
+export enum STATES {
+  DAY = 'days',
+  MONTH = 'months',
+  YEAR = 'years'
+}
+
 @Component({
   selector: 'app-calendar-body',
   templateUrl: './calendarBody.component.html',
   styleUrls: ['./calendarBody.component.css']
 })
 export class CalendarBodyComponent implements OnInit {
-  public yearsMatrix: number[][] = [];
-  public monthDaysMatrix: number[][] = [];
-  public monthsMatrix: string[][] =
-    [
-      ["January", "February", "March", "April"],
-      ["May", "June", "July", "August"],
-      ["September", "October", "November", "December"]
-    ];
+  public yearsArray: number[] = [];
+  public monthDaysArray: number[] = [];
+  public monthsArray: string[] =
+    ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   public weekDaysArray: string[] =
     ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   @Input()
@@ -23,36 +25,37 @@ export class CalendarBodyComponent implements OnInit {
   selectedValueChange: EventEmitter<Date> = new EventEmitter();
   public valueForView: Date = new Date(this.selectedValue);
   public today: Date = new Date();
-  public state: string = 'days';
+  public state: STATES = STATES.DAY;
 
 
   constructor(private dateService: DateService) {
   }
 
   ngOnInit(): void {
+    this.valueForView = new Date(this.selectedValue);
      let {
-        monthDaysMatrix, yearsMatrix
+        monthDaysArray, yearsArray
       } = this.dateService.getMonthAndYearMatrices(this.valueForView);
 
-     this.monthDaysMatrix = monthDaysMatrix;
-     this.yearsMatrix = yearsMatrix;
+     this.monthDaysArray = monthDaysArray;
+     this.yearsArray = yearsArray;
   }
 
   setValue(value: number, prop: string) {
     switch (prop) {
-      case 'day':
+      case STATES.DAY:
         (this.valueForView).setDate(value);
         this.selectedValue = new Date(this.valueForView);
         this.changeValue(this.selectedValue);
         break;
-      case 'month':
+      case STATES.MONTH:
         (this.valueForView).setMonth(value);
-        this.monthDaysMatrix = this.dateService.getMonthDaysMatrix(this.valueForView);
-        this.state = 'days';
+        this.monthDaysArray = this.dateService.getMonthDaysArray(this.valueForView);
+        this.state = STATES.DAY;
         break;
-      case 'year':
+      case STATES.YEAR:
         (this.valueForView).setFullYear(value);
-        this.state = 'months';
+        this.state = STATES.MONTH;
         break;
       default:
         throw new Error('Custom error');
@@ -60,18 +63,18 @@ export class CalendarBodyComponent implements OnInit {
   }
 
 
-  yearsButton() {
+  changeState() {
     switch (this.state){
-      case 'days':
+      case STATES.DAY:
         if (!this.haveYearView(this.valueForView.getFullYear())){
-          this.yearsMatrix = this.dateService.getYearMatrix(this.valueForView.getFullYear());
+          this.yearsArray = this.dateService.getYearArray(this.valueForView.getFullYear());
         }
-        this.state = 'years';
+        this.state = STATES.YEAR;
         break;
-      case 'years':
-      case 'months':
+      case STATES.MONTH:
+      case STATES.YEAR:
         this.valueForView = new Date(this.selectedValue);
-        this.state = 'days';
+        this.state = STATES.DAY;
         break;
     }
 
@@ -79,22 +82,21 @@ export class CalendarBodyComponent implements OnInit {
 
   changePage(shift: number) {
     switch (this.state){
-      case 'days':
+      case STATES.DAY:
         this.valueForView.setMonth(this.valueForView.getMonth() + shift);
-        this.monthDaysMatrix = this.dateService.getMonthDaysMatrix(this.valueForView);
+        this.monthDaysArray = this.dateService.getMonthDaysArray(this.valueForView);
         break;
-      case 'months':
+      case STATES.MONTH:
         this.valueForView.setFullYear(this.valueForView.getFullYear() + shift);
-        this.state = 'days';
         break;
-      case 'years':
-        this.yearsMatrix = this.dateService.getYearMatrixShiftPage(shift, this.yearsMatrix[0][0]);
+      case STATES.YEAR:
+        this.yearsArray = this.dateService.getYearMatrixShiftPage(shift, this.yearsArray[0]);
         break;
     }
   }
 
-  haveYearView(year: number, matrix: number[][] = this.yearsMatrix): boolean{
-    return (year >= matrix[0][0] && year <= matrix[matrix.length - 1][matrix[0].length - 1]);
+  haveYearView(year: number, array: number[] = this.yearsArray): boolean{
+    return (year >= array[0] && year <= array[array.length - 1]);
   }
 
   changeValue(value: Date): void{
