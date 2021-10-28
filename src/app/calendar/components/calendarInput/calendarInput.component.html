@@ -1,5 +1,5 @@
 <div>
-  <input disabled [value]="value.toDateString()">
+  <input disabled [value]="value.getDate() + '/' + value.getMonth() + '/' + value.getFullYear() ">
   <button class="material-icons" (click)="openBody()" [class.active]="body">event</button>
 </div>
 <app-calendar-body *ngIf="body" [(selectedValue)]="value"></app-calendar-body>

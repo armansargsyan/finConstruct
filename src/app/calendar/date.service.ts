@@ -3,10 +3,10 @@ import {Injectable} from "@angular/core";
 @Injectable()
 export class DateService {
 
-  public getMonthAndYearMatrices(date: Date, column?: number, row?: number): { monthDaysMatrix: number[][], yearsMatrix: number[][] }{
+  public getMonthAndYearMatrices(date: Date): { monthDaysArray: number[], yearsArray: number[] }{
     return {
-      monthDaysMatrix: this.getMonthDaysMatrix(date),
-      yearsMatrix: this.getYearMatrix(date.getFullYear(), column, row)
+      monthDaysArray: this.getMonthDaysArray(date),
+      yearsArray: this.getYearArray(date.getFullYear())
     };
   }
 
@@ -24,43 +24,30 @@ export class DateService {
     return resultDayOfWeek >= 0 ? resultDayOfWeek : 7 + resultDayOfWeek;
   }
 
-  public getMonthDaysMatrix(day: Date): number[][]{
-    let resultMatrix: number[][] = [];
+  public getMonthDaysArray(day: Date): number[]{
+    let resultArray: number[] = [];
     let lastDay: Date = this.getLastDayOfMonth(day);
     let daysCount: number = this.getDaysCount(lastDay);
     let dayOfWeek: number = this.getDayOfWeek(lastDay);
     let firstDayOfMonth: number = this.getFirstDayOfMonth(daysCount, dayOfWeek);
 
-    for (let i = 0, currentDay = 0; currentDay < daysCount; i++){
-      let resultMatrixRow: number[] = [];
-      for (let j = 0; j < 7 && currentDay < daysCount; j++){
-        if (i === 0 && j < firstDayOfMonth){
-          resultMatrixRow.push(0);
-        }
-        else {
-          resultMatrixRow.push(++currentDay);
-        }
-      }
-      resultMatrix.push(resultMatrixRow);
+    for (let i = 1; i <= firstDayOfMonth + daysCount; i++){
+      resultArray.push(i - firstDayOfMonth);
     }
-    return resultMatrix;
+    return resultArray;
   }
 
-  public getYearMatrix(year: number, column: number = 4, row: number = 4): number[][]{
-    let resultMatrix: number[][] = [];
-    let currentYear = year - column;
-    for (let i = 0; i < row; i++){
-      let resultMatrixRow: number[] = [];
-      for (let j = 0; j < column; j++){
-        resultMatrixRow.push(currentYear++);
-      }
-      resultMatrix.push(resultMatrixRow);
+  public getYearArray(year: number): number[]{
+    let resultArray: number[] = [];
+    let currentYear = year - 4;
+    for (let i = 0; i < 16; i++){
+      resultArray.push(currentYear++)
     }
-    return resultMatrix;
+    return resultArray;
   }
 
-  public getYearMatrixShiftPage(shift: number, firstYear: number, row: number = 4, column: number = 4): number[][]{
-    let year = shift < 0 ? firstYear - (row - 1) * column : firstYear + (row + 1) * column;
-    return this.getYearMatrix(year, row, column);
+  public getYearMatrixShiftPage(shift: number, firstYear: number): number[]{
+    let year = shift < 0 ? firstYear - 12 : firstYear + 20;
+    return this.getYearArray(year);
   }
 }
