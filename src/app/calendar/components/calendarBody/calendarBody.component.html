@@ -1,36 +1,42 @@
 <div class="controlBar">
   <button (click)="changeState()" class="dateButton">
-    {{monthsArray[(valueForView.getMonth())].slice(0,3) + ' ' + valueForView.getFullYear()}}
+    {{monthsArray[(valueForView.month)].slice(0,3) + ' ' + valueForView.year}}
   </button>
   <div class="pageControl">
     <button class="material-icons left" (click)="changePage(-1)">chevron_left</button>
     <button class="material-icons right" (click)="changePage(1)">chevron_right</button>
   </div>
 </div>
-<div *ngIf="state === 'years'" class="years">
-  <button *ngFor="let year of yearsArray"
-          [class.today]="today.getFullYear() === year" [class.value]="selectedValue.getFullYear() === year"
-          (click)="setValue(year, 'years')">
-    {{year}}
-  </button>
-</div>
-<div *ngIf="state === 'months'" class="months">
-  <button *ngFor="let month of monthsArray; let i = index"
-          [class.today]="today.getMonth() === i" [class.value]="selectedValue.getMonth() === i"
-          (click)="setValue(i, 'months')">
-    {{month}}
-  </button>
-</div>
-<div *ngIf="state === 'days'" class="days">
+<div *ngIf="currentState === states.DAY" class="days">
   <p *ngFor="let weekDay of weekDaysArray">
     {{weekDay.slice(0,2)}}
   </p>
   <button *ngFor="let day of monthDaysArray"
-          [class.value]="selectedValue.getFullYear() === valueForView.getFullYear() &&
-          selectedValue.getMonth() === valueForView.getMonth() &&
-           selectedValue.getDate() === day" [class.hide]="day <= 0"
-          (click)="setValue(day, 'days')"
-  >
+
+          [class.today]="today.day === day &&
+          today.month === valueForView.month &&
+          today.year === valueForView.year"
+
+          [class.value]="selectedValue.day === day &&
+          selectedValue.year === valueForView.year &&
+          selectedValue.month === valueForView.month" [class.hide]="day <= 0"
+
+          (click)="setValue(day, states.DAY)">
     {{day}}
+  </button>
+</div>
+<div *ngIf="currentState === states.MONTH" class="months">
+  <button *ngFor="let month of monthsArray; let i = index"
+          [class.today]="today.month === i && today.year === valueForView.year"
+          [class.value]="selectedValue.month === i && selectedValue.year === valueForView.year"
+          (click)="setValue(i, states.MONTH)">
+    {{month}}
+  </button>
+</div>
+<div *ngIf="currentState === states.YEAR" class="years">
+  <button *ngFor="let year of yearsArray"
+          [class.today]="today.year === year" [class.value]="selectedValue.year === year"
+          (click)="setValue(year, states.YEAR)">
+    {{year}}
   </button>
 </div>
