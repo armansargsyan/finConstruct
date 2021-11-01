@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {CustomDate, customDate, DateService} from "../../date.service";
+import {CustomDate, DateService} from "../../date.service";
 
 export enum STATES {
   DAY = 'days',
@@ -18,15 +18,15 @@ export class CalendarBodyComponent implements OnInit {
   public monthDaysArray!: number[];
   public monthsArray!: string[]
   public weekDaysArray!: string[];
-  public valueForView!: customDate;
+  public valueForView!: CustomDate;
   public today: CustomDate = new CustomDate(new Date());
   public currentState: STATES = STATES.DAY;
   public states = STATES;
 
   @Input()
-  selectedValue!: customDate;
+  selectedValue!: CustomDate;
   @Output()
-  valueChange: EventEmitter<customDate> = new EventEmitter<CustomDate>();
+  valueChange: EventEmitter<CustomDate> = new EventEmitter<CustomDate>();
 
 
   constructor(private dateService: DateService) {}
@@ -108,7 +108,7 @@ export class CalendarBodyComponent implements OnInit {
       && this.valueForView.year <= this.yearsArray[this.yearsArray.length - 1]);
   }
 
-  changeValue(value: customDate): void{
+  changeValue(value: CustomDate): void{
     this.valueChange.emit(value);
   }
 

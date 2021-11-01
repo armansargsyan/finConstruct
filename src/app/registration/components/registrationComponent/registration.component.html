@@ -1,11 +1,21 @@
 <app-registration-first-child
-  *ngIf="!isSecondStep"
+  *ngIf="currentState === states.FIRST"
   [firstStepFormGroup]="firstStepForm"
-  (nextStepEvent)="changeStep()">
+  (nextStepEvent)="changeStep(states.SECOND)">
 </app-registration-first-child>
 
 <app-registration-second-child
-  *ngIf="isSecondStep"
+  *ngIf="currentState === states.SECOND"
   [secondStepFormGroup]="secondStepForm"
-  (lastStepEvent)="changeStep()" (submitEvent)="submitForm()">
+  (backStepEvent)="changeStep(states.FIRST)"
+  (nextStepEvent)="changeStep(states.THIRD)">
 </app-registration-second-child>
+
+<app-registration-third-child
+*ngIf="currentState === states.THIRD"
+[firstStepFormGroup]="firstStepForm"
+(backStepEvent)="changeStep(states.SECOND)"
+(formSubmitEvent)="submitForm()"
+>
+
+</app-registration-third-child>
