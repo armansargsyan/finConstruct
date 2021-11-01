@@ -29,8 +29,8 @@ export class RegistrationComponent{
     ),
     secondStep: new FormGroup(
       {
-        password: new FormControl('', [Validators.required, this.passwordConfirmValidator()]),
-        confirmPassword: new FormControl('', [Validators.required, this.passwordConfirmValidator()])
+        password: new FormControl('', [Validators.required]),
+        confirmPassword: new FormControl('', [Validators.required])
       }
     )
   });
@@ -58,16 +58,6 @@ export class RegistrationComponent{
     this.firstStepForm =<FormGroup>this.userFormGroup.controls['firstStep'];
     this.secondStepForm =<FormGroup>this.userFormGroup.controls['secondStep'];*/
   }
-  passwordConfirmValidator(): ValidatorFn{
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      if (control.value === control.parent?.value['confirmPassword'] || control.value === control.parent?.value['password']){
-        control.parent?.get('password')?.setErrors(null)
-        control.parent?.get('confirmPassword')?.setErrors(null)
-        return null
-      }
-      return {"confirmPassword": true};
-    }
-  }
 
   submitForm() {
     console.log(this.userFormGroup.value)
@@ -76,6 +66,17 @@ export class RegistrationComponent{
   changeStep(state: STATES) {
     this.currentState = state;
   }
+
+  /*  passwordConfirmValidator(): ValidatorFn{
+      return (control: AbstractControl): { [key: string]: any } | null => {
+        if (control.value === control.parent?.value['confirmPassword'] || control.value === control.parent?.value['password']){
+          control.parent?.get('password')?.setErrors(null)
+          control.parent?.get('confirmPassword')?.setErrors(null)
+          return null
+        }
+        return {"confirmPassword": true};
+      }
+    }*/
 
 
 }
