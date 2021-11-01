@@ -1,0 +1,17 @@
+<div>
+  <h1>Enter your password</h1>
+  <form [formGroup]="secondStepFormGroup" (submit)="nextStep()">
+    <div>
+      <label>Password</label>
+      <input type="password" formControlName="password">
+    </div>
+    <div>
+      <label>Confirm Password</label>
+      <input type="password" formControlName="confirmPassword">
+    </div>
+    <div class="buttons">
+      <button type="button" (click)="backStep()">Back</button>
+      <button type="submit" [disabled]="secondStepFormGroup.invalid">Submit</button>
+    </div>
+  </form>
+</div>

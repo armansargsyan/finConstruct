@@ -1,41 +1,12 @@
 import {Injectable} from "@angular/core";
 
-export interface customDate{
-  day: number,
-  month: number,
-  year: number,
-  date: Date,
-  setDay(value: number): void,
-  setMonth(value: number): void,
-  setYear(value: number): void,
-  setDate(value: Date): void,
-}
 
-export class CustomDate implements customDate{
-  day;
-  month;
-  year;
-  date;
-  setDay(value: number){
-    this.date.setDate(value);
-    this.day = this.date.getDate();
-  }
-  setMonth(value: number){
+export class CustomDate {
 
-    this.date.setMonth(value);
-    this.month = this.date.getMonth();
-    this.year = this.date.getFullYear()
-  }
-  setYear(value: number){
-    this.date.setFullYear(value);
-    this.year = this.date.getFullYear();
-  }
-  setDate(value: Date){
-    this.day = value.getDate();
-    this.month = value.getMonth();
-    this.year = value.getFullYear();
-    this.date = value;
-  }
+  day: number;
+  month: number;
+  year: number;
+  date: Date;
 
   constructor(date: Date) {
     this.day = date.getDate();
@@ -43,6 +14,21 @@ export class CustomDate implements customDate{
     this.year = date.getFullYear();
     this.date = new Date(date);
   }
+  setDay(value: number){
+    this.date.setDate(value);
+    this.day = this.date.getDate();
+  }
+
+  setMonth(value: number){
+    this.date.setMonth(value);
+    this.month = this.date.getMonth();
+    this.year = this.date.getFullYear();
+  }
+  setYear(value: number){
+    this.date.setFullYear(value);
+    this.year = this.date.getFullYear();
+  }
+
 }
 
 
